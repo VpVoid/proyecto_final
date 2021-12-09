@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,8 +25,9 @@ import org.w3c.dom.Text;
 
 public class compass_fragment extends Fragment implements SensorEventListener {
 
-    private ImageView imageView;
+    private ImageView imageView, imageView2, imageView3, imageView4;
     private TextView textView;
+    private ImageButton imageButton;
 
     private SensorManager sensorManager;
     private Sensor accelerometerSensor, magnetometerSensor;
@@ -49,7 +51,12 @@ public class compass_fragment extends Fragment implements SensorEventListener {
                 false);
 
         imageView = rootView.findViewById(R.id.brujula1);
+        imageView2 = rootView.findViewById(R.id.brujula2);
+        imageView3 = rootView.findViewById(R.id.brujula3);
+        imageView4 = rootView.findViewById(R.id.brujula4);
+
         textView = rootView.findViewById(R.id.textView);
+        imageButton = rootView.findViewById(R.id.change);
 
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -71,7 +78,7 @@ public class compass_fragment extends Fragment implements SensorEventListener {
         }
 
         if(isLastAccelerometerArrayCopied && isLastMagnetometerArrayCopied && System.currentTimeMillis() - lastUpdatedTime > 250){
-            SensorManager.getRotationMatrix(rotationMatrix, null,lastAccelerometer,lastMagnetometer);
+            SensorManager.getRotationMatrix(rotationMatrix, null,lastAccelerometer, lastMagnetometer);
             SensorManager.getOrientation(rotationMatrix, orientation);
 
             float azimuthInRadians = orientation[0];
@@ -81,6 +88,9 @@ public class compass_fragment extends Fragment implements SensorEventListener {
             rotateAnimation.setDuration(250);
             rotateAnimation.setFillAfter(true);
             imageView.startAnimation(rotateAnimation);
+            imageView2.startAnimation(rotateAnimation);
+            imageView3.startAnimation(rotateAnimation);
+            imageView4.startAnimation(rotateAnimation);
 
             currentDegree = -azimuthInDegree;
             lastUpdatedTime = System.currentTimeMillis();
